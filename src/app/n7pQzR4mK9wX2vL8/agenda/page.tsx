@@ -36,22 +36,22 @@ export default function AgendaAdminPage() {
           <h1 className="text-2xl font-bold text-gray-900">Agenda Kegiatan</h1>
           <p className="text-gray-500 text-sm mt-1">Kelola semua agenda Proker maupun Non-Proker</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Link href="/n7pQzR4mK9wX2vL8/agenda/tambah?jenis=proker"
-            className="bg-green-600 text-white px-4 py-2.5 rounded-lg hover:bg-green-700 transition text-sm font-medium flex items-center gap-2">
-            <span className="text-xs bg-white text-green-700 px-1.5 py-0.5 rounded font-bold">Proker</span>
-            + Agenda Proker
+            className="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition text-xs font-medium flex items-center gap-1.5 whitespace-nowrap">
+            <span className="bg-white text-green-700 px-1 py-0.5 rounded font-bold text-xs">P</span>
+            + Proker
           </Link>
           <Link href="/n7pQzR4mK9wX2vL8/agenda/tambah?jenis=non-proker"
-            className="bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 transition text-sm font-medium flex items-center gap-2">
-            <span className="text-xs bg-white text-blue-700 px-1.5 py-0.5 rounded font-bold">Non</span>
-            + Agenda Non-Proker
+            className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition text-xs font-medium flex items-center gap-1.5 whitespace-nowrap">
+            <span className="bg-white text-blue-700 px-1 py-0.5 rounded font-bold text-xs">N</span>
+            + Non-Proker
           </Link>
         </div>
       </div>
 
       {/* Filter */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {(['semua', 'proker', 'non-proker'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition capitalize ${filter === f ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>

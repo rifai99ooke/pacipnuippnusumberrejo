@@ -105,12 +105,12 @@ export default function DepartemenCRUDPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Departemen & Lembaga</h1>
-          <p className="text-gray-500 text-sm mt-1">Kelola daftar BPH, departemen, dan lembaga organisasi</p>
+      <div className="flex items-start justify-between mb-6 gap-3">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Departemen & Lembaga</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">Kelola daftar BPH, departemen, dan lembaga organisasi</p>
         </div>
-        <button onClick={openAdd} className="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition text-sm font-medium">
+        <button onClick={openAdd} className="bg-green-600 text-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-lg hover:bg-green-700 transition text-xs sm:text-sm font-medium flex-shrink-0">
           + Tambah
         </button>
       </div>
