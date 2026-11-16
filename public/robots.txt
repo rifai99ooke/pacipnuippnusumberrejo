@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Blokir halaman admin tersembunyi dari crawler
+Disallow: /n7pQzR4mK9wX2vL8/
+Disallow: /xk9m2-secure-panel
+Disallow: /api/
+
+Sitemap: https://pacipnuippnusumberrejo.my.id/sitemap.xml

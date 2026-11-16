@@ -1,8 +1,39 @@
 import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+const BASE_URL = 'https://pacipnuippnusumberrejo.my.id'
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const { data: b } = await supabase.from('berita').select('*').eq('slug', slug).single()
+  if (!b) return {}
+
+  const fotoUrl = b.foto ? getStorageUrl('berita', b.foto) : null
+  const ringkasan = b.ringkasan?.replace(/<[^>]*>/g, '').slice(0, 160) || b.judul
+
+  return {
+    title:       b.judul,
+    description: ringkasan,
+    openGraph: {
+      type:        'article',
+      title:       b.judul,
+      description: ringkasan,
+      url:         `${BASE_URL}/berita/${slug}`,
+      images:      fotoUrl ? [{ url: fotoUrl, width: 1200, height: 630, alt: b.judul }] : [{ url: '/og-image.svg' }],
+      publishedTime: b.tanggal_publish,
+    },
+    twitter: {
+      card:        'summary_large_image',
+      title:       b.judul,
+      description: ringkasan,
+      images:      fotoUrl ? [fotoUrl] : ['/og-image.svg'],
+    },
+  }
+}
 
 const gradients = ['from-green-300 to-green-500', 'from-blue-300 to-blue-500', 'from-yellow-300 to-yellow-500', 'from-purple-300 to-purple-500']
 
