@@ -31,7 +31,7 @@ export default function ProgramKerjaAdminPage() {
         {depts.map((d) => (
           <Link
             key={d.slug}
-            href={`/admin/program-kerja/${d.slug}`}
+            href={`/n7pQzR4mK9wX2vL8/program-kerja/${d.slug}`}
             className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all group flex items-center gap-4"
           >
             <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"

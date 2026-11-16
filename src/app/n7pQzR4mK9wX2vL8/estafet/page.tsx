@@ -44,7 +44,7 @@ export default function EstafetAdminPage() {
       columns={columns}
       rows={rows}
       onDelete={handleDelete}
-      editHref={(id) => `/admin/estafet/edit/${id}`}
+      editHref={(id) => `/n7pQzR4mK9wX2vL8/estafet/edit/${id}`}
       renderCell={renderCell}
     />
   )

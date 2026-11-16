@@ -30,7 +30,7 @@ export default function AdminBeritaPage() {
       ]}
       rows={rows}
       onDelete={handleDelete}
-      editHref={(id) => `/admin/berita/edit/${id}`}
+      editHref={(id) => `/n7pQzR4mK9wX2vL8/berita/edit/${id}`}
       renderCell={(key, row) => {
         if (key === 'tanggal_publish') return new Date(row.tanggal_publish).toLocaleDateString('id-ID')
         if (key === 'published') return <span className={`px-2 py-1 text-xs rounded-full font-medium ${row.published ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>{row.published ? 'Published' : 'Draft'}</span>

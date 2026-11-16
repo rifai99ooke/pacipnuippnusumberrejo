@@ -45,7 +45,7 @@ export default function PengurusAdminPage() {
       columns={columns}
       rows={rows}
       onDelete={handleDelete}
-      editHref={(id) => `/admin/pengurus/edit/${id}`}
+      editHref={(id) => `/n7pQzR4mK9wX2vL8/pengurus/edit/${id}`}
       renderCell={renderCell}
     />
   )

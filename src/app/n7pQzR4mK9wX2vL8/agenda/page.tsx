@@ -101,7 +101,7 @@ export default function AgendaAdminPage() {
                 </td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Link href={`/admin/agenda/edit/${r.id}`} className="text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</Link>
+                    <Link href={`/n7pQzR4mK9wX2vL8/agenda/edit/${r.id}`} className="text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</Link>
                     <button onClick={() => handleDelete(r.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
                   </div>
                 </td>

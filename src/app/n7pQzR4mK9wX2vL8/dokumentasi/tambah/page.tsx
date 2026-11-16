@@ -48,7 +48,7 @@ export default function TambahDokumentasiPage() {
 
       if (error) throw new Error(error.message)
       // Langsung ke halaman kelola foto
-      router.push(`/admin/dokumentasi/${data.id}/foto`)
+      router.push(`/n7pQzR4mK9wX2vL8/dokumentasi/${data.id}/foto`)
     } catch (err: any) {
       setErrorMsg(err.message || 'Gagal menyimpan.')
     } finally {

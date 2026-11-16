@@ -90,11 +90,11 @@ export default function DokumentasiAdminPage() {
                     {new Date(a.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
                   <div className="flex items-center gap-2">
-                    <Link href={`/admin/dokumentasi/${a.id}/foto`}
+                    <Link href={`/n7pQzR4mK9wX2vL8/dokumentasi/${a.id}/foto`}
                       className="flex-1 text-center py-2 text-sm font-medium bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition">
                       Kelola Foto
                     </Link>
-                    <Link href={`/admin/dokumentasi/edit/${a.id}`}
+                    <Link href={`/n7pQzR4mK9wX2vL8/dokumentasi/edit/${a.id}`}
                       className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                       Edit
                     </Link>
