@@ -6,9 +6,10 @@ import Footer from './Footer'
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const isAdmin = pathname.startsWith('/admin')
+  const isAdmin  = pathname.startsWith('/admin')
+  const isLogin  = pathname.startsWith('/xk9m2-secure-panel')
 
-  if (isAdmin) {
+  if (isAdmin || isLogin) {
     return <>{children}</>
   }
 
