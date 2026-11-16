@@ -12,7 +12,7 @@ const JABATAN_BY_TIPE: Record<string, string[]> = {
 interface Props {
   value: string
   onChange: (val: string) => void
-  slug: string
+  slug?: string
   tipe?: string   // ← bisa di-pass langsung dari parent
   className?: string
 }
