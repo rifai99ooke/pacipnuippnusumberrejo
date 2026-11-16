@@ -1,5 +1,7 @@
 'use client'
 
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
+
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -17,6 +19,7 @@ export default function KelolaFotoPage() {
   const [progress, setProgress] = useState(0)
   const [editCaption, setEditCaption] = useState<Record<number, string>>({})
   const [savingCaption, setSavingCaption] = useState<number | null>(null)
+  const [deleteFoto, setDeleteFoto] = useState<{ id: number; path: string } | null>(null)
 
   // Pagination
   const [page, setPage] = useState(1)
@@ -89,7 +92,6 @@ export default function KelolaFotoPage() {
   }
 
   const handleDelete = async (fotoId: number, fotoPath: string) => {
-    if (!confirm('Hapus foto ini?')) return
     await supabase.from('dokumentasi_foto').delete().eq('id', fotoId)
     // Update cover jika foto yang dihapus adalah cover
     if (album?.cover_foto === fotoPath) {
@@ -202,7 +204,7 @@ export default function KelolaFotoPage() {
                           Cover
                         </button>
                       )}
-                      <button onClick={() => handleDelete(f.id, f.foto)}
+                      <button onClick={() => setDeleteFoto({ id: f.id, path: f.foto })}
                         className="bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-red-600 transition">
                         Hapus
                       </button>
@@ -248,6 +250,14 @@ export default function KelolaFotoPage() {
           <p className="text-center text-xs text-gray-400 mt-2">{fotos.length} foto total • halaman {page} dari {totalPages}</p>
         </>
       )}
+      <ConfirmDialog
+        open={deleteFoto !== null}
+        title="Hapus Foto"
+        message="Foto yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteFoto) handleDelete(deleteFoto.id, deleteFoto.path); setDeleteFoto(null) }}
+        onCancel={() => setDeleteFoto(null)}
+      />
     </div>
   )
 }

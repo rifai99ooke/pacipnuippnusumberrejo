@@ -1,5 +1,7 @@
 'use client'
 
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
+
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -42,6 +44,7 @@ export default function DepartemenAnggotaPage() {
   const [form, setForm] = useState<FormState>(emptyForm)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   // Crop state
   const [rawSrc, setRawSrc] = useState<string | null>(null)
@@ -71,7 +74,6 @@ export default function DepartemenAnggotaPage() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Hapus anggota ini?')) return
     await supabase.from('pengurus').delete().eq('id', id)
     load()
   }
@@ -181,7 +183,7 @@ export default function DepartemenAnggotaPage() {
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button type="button" onClick={() => openEdit(p)} className="text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</button>
-                    <button type="button" onClick={() => handleDelete(p.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
+                    <button type="button" onClick={() => setDeleteId(p.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
                   </div>
                 </td>
               </tr>
@@ -262,6 +264,14 @@ export default function DepartemenAnggotaPage() {
       {showCropper && rawSrc && (
         <ImageCropper src={rawSrc} aspect={1} onDone={handleCropDone} onCancel={() => setShowCropper(false)} />
       )}
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Hapus Anggota"
+        message="Data anggota yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteId !== null) handleDelete(deleteId); setDeleteId(null) }}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }

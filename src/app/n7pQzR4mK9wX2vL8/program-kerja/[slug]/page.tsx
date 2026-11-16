@@ -1,5 +1,7 @@
 'use client'
 
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
+
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
@@ -33,6 +35,7 @@ export default function ProkerDeptPage() {
   const [form, setForm] = useState<FormState>(emptyForm)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   const load = async () => {
     const { data } = await supabase
@@ -66,7 +69,6 @@ export default function ProkerDeptPage() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Hapus program kerja ini?')) return
     await supabase.from('program_kerja').delete().eq('id', id)
     load()
   }
@@ -169,7 +171,7 @@ export default function ProkerDeptPage() {
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button type="button" onClick={() => openEdit(p)} className="text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</button>
-                    <button type="button" onClick={() => handleDelete(p.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
+                    <button type="button" onClick={() => setDeleteId(p.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
                   </div>
                 </td>
               </tr>
@@ -261,6 +263,14 @@ export default function ProkerDeptPage() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Hapus Program Kerja"
+        message="Program kerja yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteId !== null) handleDelete(deleteId); setDeleteId(null) }}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }

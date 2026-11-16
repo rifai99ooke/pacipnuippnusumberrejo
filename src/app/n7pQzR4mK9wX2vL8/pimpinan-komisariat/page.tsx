@@ -1,5 +1,7 @@
 'use client'
 
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
+
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 
@@ -26,6 +28,7 @@ export default function PimpinanKomisariatAdminPage() {
   const [form, setForm] = useState<Form>(empty)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   const load = () => supabase.from('pimpinan_komisariat').select('*').order('urutan').then(({ data }) => setList(data || []))
 
@@ -35,7 +38,6 @@ export default function PimpinanKomisariatAdminPage() {
   const openEdit = (r: any) => { setForm({ ...r }); setErrorMsg(''); setShowForm(true) }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Hapus data ini?')) return
     await supabase.from('pimpinan_komisariat').delete().eq('id', id)
     load()
   }
@@ -106,7 +108,7 @@ export default function PimpinanKomisariatAdminPage() {
                 <td className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-2">
                     <button onClick={() => openEdit(r)} className="text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</button>
-                    <button onClick={() => handleDelete(r.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
+                    <button onClick={() => setDeleteId(r.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
                   </div>
                 </td>
               </tr>
@@ -191,6 +193,14 @@ export default function PimpinanKomisariatAdminPage() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Hapus Data"
+        message="Data yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteId !== null) handleDelete(deleteId); setDeleteId(null) }}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }

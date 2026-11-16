@@ -1,5 +1,7 @@
 'use client'
 
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
+
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
@@ -17,6 +19,7 @@ export default function PesanMasukPage() {
   const [pesanList, setPesanList] = useState<PesanMasuk[]>([])
   const [loading, setLoading] = useState(true)
   const [dipilih, setDipilih] = useState<PesanMasuk | null>(null)
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   const muat = async () => {
     setLoading(true)
@@ -37,7 +40,6 @@ export default function PesanMasukPage() {
   }
 
   const hapus = async (id: number) => {
-    if (!confirm('Hapus pesan ini?')) return
     await supabase.from('pesan_masuk').delete().eq('id', id)
     setPesanList((prev) => prev.filter((p) => p.id !== id))
     if (dipilih?.id === id) setDipilih(null)
@@ -127,7 +129,7 @@ export default function PesanMasukPage() {
                     </p>
                   </div>
                   <button
-                    onClick={() => hapus(dipilih.id)}
+                    onClick={() => setDeleteId(dipilih.id)}
                     className="text-red-400 hover:text-red-600 transition p-1"
                     title="Hapus pesan"
                   >
@@ -189,6 +191,14 @@ export default function PesanMasukPage() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Hapus Pesan"
+        message="Pesan yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteId !== null) hapus(deleteId); setDeleteId(null) }}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }

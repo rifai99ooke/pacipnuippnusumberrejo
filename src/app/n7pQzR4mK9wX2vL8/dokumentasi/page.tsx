@@ -1,11 +1,14 @@
 'use client'
 
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
+
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 
 export default function DokumentasiAdminPage() {
   const [albums, setAlbums] = useState<any[]>([])
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   const load = async () => {
     const { data } = await supabase
@@ -31,7 +34,6 @@ export default function DokumentasiAdminPage() {
   useEffect(() => { load() }, [])
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Hapus album ini beserta semua fotonya?')) return
     await supabase.from('dokumentasi').delete().eq('id', id)
     load()
   }
@@ -98,7 +100,7 @@ export default function DokumentasiAdminPage() {
                       className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                       Edit
                     </Link>
-                    <button onClick={() => handleDelete(a.id)}
+                    <button onClick={() => setDeleteId(a.id)}
                       className="px-3 py-2 text-sm font-medium text-red-500 hover:text-red-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                       Hapus
                     </button>
@@ -109,6 +111,14 @@ export default function DokumentasiAdminPage() {
           })}
         </div>
       )}
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Hapus Album"
+        message="Album beserta semua fotonya akan dihapus permanen. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteId !== null) handleDelete(deleteId); setDeleteId(null) }}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }

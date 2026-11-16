@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import ConfirmDialog from '@/components/admin/ConfirmDialog'
 
 const statusColor: Record<string, string> = {
   akan_datang: 'bg-blue-100 text-blue-700',
@@ -12,6 +13,7 @@ const statusColor: Record<string, string> = {
 export default function AgendaAdminPage() {
   const [rows, setRows] = useState<any[]>([])
   const [filter, setFilter] = useState<'semua' | 'proker' | 'non-proker'>('semua')
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   const load = async () => {
     let q = supabase.from('agenda').select('*, program_kerja(nama, departemen)').order('tanggal', { ascending: false })
@@ -23,7 +25,6 @@ export default function AgendaAdminPage() {
   useEffect(() => { load() }, [filter])
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Hapus agenda ini?')) return
     await supabase.from('agenda').delete().eq('id', id)
     load()
   }
@@ -102,14 +103,22 @@ export default function AgendaAdminPage() {
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Link href={`/n7pQzR4mK9wX2vL8/agenda/edit/${r.id}`} className="text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</Link>
-                    <button onClick={() => handleDelete(r.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>
-                  </div>
+                    <button onClick={() => setDeleteId(r.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Hapus</button>                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Hapus Agenda"
+        message="Agenda yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?"
+        confirmLabel="Ya, Hapus"
+        onConfirm={() => { if (deleteId !== null) handleDelete(deleteId); setDeleteId(null) }}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }
