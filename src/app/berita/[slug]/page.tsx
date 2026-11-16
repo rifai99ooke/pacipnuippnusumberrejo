@@ -23,14 +23,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title:       b.judul,
       description: ringkasan,
       url:         `${BASE_URL}/berita/${slug}`,
-      images:      fotoUrl ? [{ url: fotoUrl, width: 1200, height: 630, alt: b.judul }] : [{ url: '/og-image.svg' }],
+      images:      fotoUrl ? [{ url: fotoUrl, width: 1200, height: 630, alt: b.judul }] : [{ url: `${BASE_URL}/opengraph-image` }],
       publishedTime: b.tanggal_publish,
     },
     twitter: {
       card:        'summary_large_image',
       title:       b.judul,
       description: ringkasan,
-      images:      fotoUrl ? [fotoUrl] : ['/og-image.svg'],
+      images:      fotoUrl ? [fotoUrl] : [`${BASE_URL}/opengraph-image`],
     },
   }
 }

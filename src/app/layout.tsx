@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: 'Website resmi Pimpinan Anak Cabang IPNU IPPNU Sumberrejo, Kabupaten Bojonegoro. Wadah pelajar, santri, dan mahasiswa Nahdlatul Ulama.',
     images: [
       {
-        url:    '/og-image.svg',
+        url:    `${BASE_URL}/opengraph-image`,
         width:  1200,
         height: 630,
         alt:    'PAC IPNU IPPNU Sumberrejo',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card:        'summary_large_image',
     title:       'PAC IPNU IPPNU Sumberrejo',
     description: 'Website resmi PAC IPNU IPPNU Sumberrejo, Kabupaten Bojonegoro.',
-    images:      ['/og-image.svg'],
+    images:      [`${BASE_URL}/opengraph-image`],
   },
 
   // Robots
