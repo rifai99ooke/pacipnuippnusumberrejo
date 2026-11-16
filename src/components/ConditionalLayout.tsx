@@ -8,8 +8,9 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
   const pathname = usePathname()
   const isAdmin  = pathname.startsWith('/n7pQzR4mK9wX2vL8')
   const isLogin  = pathname.startsWith('/xk9m2-secure-panel')
+  const isHidden = pathname.startsWith('/admin') // /admin → 404 tanpa navbar
 
-  if (isAdmin || isLogin) {
+  if (isAdmin || isLogin || isHidden) {
     return <>{children}</>
   }
 
