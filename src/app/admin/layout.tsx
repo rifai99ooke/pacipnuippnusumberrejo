@@ -71,13 +71,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </nav>
 
       {/* Footer */}
-      <div className="p-5 border-t border-gray-700">
+      <div className="p-5 border-t border-gray-700 space-y-3">
         <Link href="/" className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Kembali ke Website
         </Link>
+        <button
+          onClick={async () => {
+            await fetch('/api/auth/logout', { method: 'POST' })
+            window.location.href = '/xk9m2-secure-panel'
+          }}
+          className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm transition w-full"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Keluar
+        </button>
       </div>
     </div>
   )
