@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
 export const metadata = { title: 'Program Kerja' }
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function ProgramKerjaPage() {
   // Ambil departemen dari database (exclude BPH - tidak punya proker)

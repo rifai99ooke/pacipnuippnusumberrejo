@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 export const metadata = { title: 'Struktur Kepengurusan' }
 
 function PengurusCard({ p }: { p: any }) {

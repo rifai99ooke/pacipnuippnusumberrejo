@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 
 export const metadata = { title: 'Berita' }
+export const revalidate = 60
 export const dynamic = 'force-dynamic'
 
 const gradients = [

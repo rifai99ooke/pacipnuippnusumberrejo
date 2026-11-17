@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 
 export const metadata = { title: 'Dokumentasi' }
+export const revalidate = 60
 export const dynamic = 'force-dynamic'
 
 export default async function DokumentasiPage() {

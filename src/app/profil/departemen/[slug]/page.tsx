@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 
+export const revalidate = 60
 export const dynamic = 'force-dynamic'
 
 export default async function DepartemenDetailPage({ params }: { params: Promise<{ slug: string }> }) {

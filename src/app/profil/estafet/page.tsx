@@ -1,7 +1,7 @@
 import { supabase, getStorageUrl } from '@/lib/supabase'
 
 export const metadata = { title: 'Estafet Kepemimpinan' }
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function EstafetPage() {
   const { data } = await supabase.from('estafet').select('*').order('urutan', { ascending: false })

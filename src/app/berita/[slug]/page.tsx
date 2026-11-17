@@ -3,6 +3,7 @@ import { supabase, getStorageUrl } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
+export const revalidate = 60
 export const dynamic = 'force-dynamic'
 
 const BASE_URL = 'https://pacipnuippnusumberrejo.my.id'

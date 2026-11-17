@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 
 export const metadata = { title: 'Visi & Misi' }
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function VisiMisiPage() {
   const { data } = await supabase.from('visi_misi').select('*').single()

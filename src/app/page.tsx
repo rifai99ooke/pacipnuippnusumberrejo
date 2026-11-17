@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { supabase, getStorageUrl } from '@/lib/supabase'
 import SambutanSection from '@/components/SambutanSection'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 async function getBeranda() {
   const { data } = await supabase.from('beranda').select('*').single()
