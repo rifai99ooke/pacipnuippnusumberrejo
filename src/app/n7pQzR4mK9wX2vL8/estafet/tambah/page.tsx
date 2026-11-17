@@ -73,8 +73,8 @@ export default function TambahEstafetPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Tambah Estafet Kepemimpinan</h1>
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-6">
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Tambah Estafet Kepemimpinan</h1>
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-4 sm:p-6 space-y-6">
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">Periode <span className="text-red-500">*</span></label>
@@ -121,7 +121,7 @@ export default function TambahEstafetPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Urutan</label>
             <input type="number" min="0" value={urutan} onChange={e => setUrutan(e.target.value)} className={inputCls} />
