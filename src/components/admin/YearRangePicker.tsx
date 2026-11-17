@@ -10,7 +10,7 @@ export default function YearRangePicker({ value, onChange }: Props) {
   const tahunMulai   = parts[0]?.trim() || ''
   const tahunSelesai = parts[1]?.trim() || ''
 
-  const inputCls = 'w-28 px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition text-sm text-center'
+  const inputCls = 'w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition text-sm text-center'
 
   const handleMulai = (val: string) => {
     onChange(val && tahunSelesai ? `${val} – ${tahunSelesai}` : val || '')
@@ -21,8 +21,8 @@ export default function YearRangePicker({ value, onChange }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-wrap items-end gap-2">
+      <div className="flex flex-col gap-1 w-28">
         <label className="text-xs text-gray-500 font-medium">Tahun Mulai</label>
         <input
           type="number"
@@ -34,9 +34,9 @@ export default function YearRangePicker({ value, onChange }: Props) {
         />
       </div>
 
-      <span className="text-gray-400 font-bold text-lg mt-4">–</span>
+      <span className="text-gray-400 font-bold text-lg pb-2">–</span>
 
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-col gap-1 w-28">
         <label className="text-xs text-gray-500 font-medium">Tahun Selesai</label>
         <input
           type="number"
@@ -50,7 +50,7 @@ export default function YearRangePicker({ value, onChange }: Props) {
 
       {/* Preview */}
       {tahunMulai && tahunSelesai && (
-        <div className="mt-4 bg-green-50 border border-green-200 text-green-700 px-3 py-2 rounded-lg text-sm font-semibold">
+        <div className="bg-green-50 border border-green-200 text-green-700 px-3 py-2 rounded-lg text-sm font-semibold pb-2">
           {tahunMulai} – {tahunSelesai}
         </div>
       )}
