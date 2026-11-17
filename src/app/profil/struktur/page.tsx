@@ -14,13 +14,13 @@ function PengurusCard({ p }: { p: any }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={fotoUrl} alt={p.nama} className="w-full h-full object-cover" />
         ) : (
-          <div className={`w-full h-full flex items-center justify-center ${isIPNU ? 'bg-green-100' : 'bg-pink-100'}`}>
-            <span className={`text-xl font-bold ${isIPNU ? 'text-green-600' : 'text-pink-600'}`}>{p.nama?.charAt(0)}</span>
+          <div className={`w-full h-full flex items-center justify-center bg-green-100`}>
+            <span className={`text-xl font-bold text-green-600`}>{p.nama?.charAt(0)}</span>
           </div>
         )}
       </div>
       <p className="font-semibold text-gray-900 text-sm">{p.nama}</p>
-      <p className={`text-xs font-medium mt-1 ${isIPNU ? 'text-green-600' : 'text-pink-600'}`}>{p.jabatan}</p>
+      <p className={`text-xs font-medium mt-1 text-green-600`}>{p.jabatan}</p>
     </div>
   )
 }
@@ -76,7 +76,7 @@ export default async function StrukturPage() {
         <section className="py-14 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-1 h-8 bg-pink-600 rounded-full" />
+              <div className="w-1 h-8 bg-green-600 rounded-full" />
               <h2 className="text-2xl font-bold text-gray-900">Badan Pengurus Harian IPPNU</h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">

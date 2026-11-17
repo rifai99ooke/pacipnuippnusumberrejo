@@ -86,7 +86,7 @@ function EstafetCard({ periode, aktif, ipnu, ippnu, hidePeriode }: {
       <div className="flex gap-2 md:gap-6 justify-center">
         {[
           { ...ipnu,  jabatan: 'KETUA IPNU',  color: '#16a34a' },
-          { ...ippnu, jabatan: 'KETUA IPPNU', color: '#db2777' },
+          { ...ippnu, jabatan: 'KETUA IPPNU', color: '#16a34a' },
         ].map((k) => (
           <div key={k.jabatan} className="text-center">
             <div className="w-14 h-14 md:w-24 md:h-24 rounded-xl overflow-hidden mx-auto mb-1 md:mb-2 bg-gray-100">

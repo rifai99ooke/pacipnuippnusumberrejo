@@ -76,7 +76,7 @@ export default function SambutanSection({ beranda }: { beranda: any }) {
           </button>
           <button
             onClick={() => setActive('ippnu')}
-            className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all ${active === 'ippnu' ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-600'}`}
+            className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all ${active === 'ippnu' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600'}`}
           >
             IPPNU
           </button>
@@ -151,7 +151,7 @@ export default function SambutanSection({ beranda }: { beranda: any }) {
           </button>
           <button
             onClick={() => setActive('ippnu')}
-            className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all ${active === 'ippnu' ? 'bg-pink-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+            className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all ${active === 'ippnu' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
           >
             IPPNU
           </button>
