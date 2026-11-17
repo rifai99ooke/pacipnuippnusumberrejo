@@ -53,7 +53,6 @@ export default async function StrukturPage() {
       <section className="bg-gradient-to-br from-green-600 to-green-700 py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Struktur Kepengurusan</h1>
-          <p className="text-green-100 text-lg">Periode 2024 – 2026</p>
         </div>
       </section>
 
