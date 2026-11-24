@@ -38,16 +38,17 @@ export default function DataTable({ title, addHref, columns, rows, onDelete, edi
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full text-sm table-fixed">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase hidden sm:table-cell">No</th>
-              {processedColumns.map((c) => (
-                <th key={c.key} className={`px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase ${c.hideOnMobile ? 'hidden sm:table-cell' : ''}`}>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase hidden sm:table-cell w-8">No</th>
+              {processedColumns.map((c, i) => (
+                <th key={c.key} className={`px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase ${c.hideOnMobile ? 'hidden sm:table-cell' : ''} ${i === 0 ? 'w-auto' : 'w-28 sm:w-32'}`}>
                   {c.label}
                 </th>
               ))}
-              <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Aksi</th>
+              <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase w-20">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -59,7 +60,7 @@ export default function DataTable({ title, addHref, columns, rows, onDelete, edi
               <tr key={row.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{i + 1}</td>
                 {processedColumns.map((c) => (
-                  <td key={c.key} className={`px-4 py-3 text-gray-900 ${c.hideOnMobile ? 'hidden sm:table-cell' : ''} ${c.key === processedColumns[0].key ? 'max-w-[150px] sm:max-w-xs lg:max-w-none truncate' : ''}`}>
+                  <td key={c.key} className={`px-4 py-3 text-gray-900 ${c.hideOnMobile ? 'hidden sm:table-cell' : ''} ${c.key === processedColumns[0].key ? 'truncate max-w-0' : ''}`}>
                     {renderCell ? renderCell(c.key, row) : (row[c.key] ?? '-')}
                   </td>
                 ))}
@@ -75,6 +76,7 @@ export default function DataTable({ title, addHref, columns, rows, onDelete, edi
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       <ConfirmDialog
