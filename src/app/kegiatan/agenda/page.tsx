@@ -66,8 +66,8 @@ export default function AgendaPage() {
                 return (
                   <div key={a.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group">
                     {/* Foto */}
-                    <div className={`relative aspect-video overflow-hidden ${isProker ? 'bg-gradient-to-br from-green-300 to-green-500' : 'bg-gradient-to-br from-blue-300 to-blue-500'}`}>
-                      {fotoUrl && <img src={fotoUrl} alt={a.judul} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />}
+                    <div className={`relative overflow-hidden ${isProker ? 'bg-gradient-to-br from-green-300 to-green-500' : 'bg-gradient-to-br from-blue-300 to-blue-500'}`}>
+                      {fotoUrl && <img src={fotoUrl} alt={a.judul} className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500" />}
                       {/* Badge jenis */}
                       <div className="absolute top-3 left-3 flex gap-2">
                         <span className={`text-white text-xs font-bold px-2.5 py-1 rounded-full ${isProker ? 'bg-green-600' : 'bg-blue-600'}`}>

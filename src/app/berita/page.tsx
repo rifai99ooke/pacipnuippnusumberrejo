@@ -48,11 +48,11 @@ export default async function BeritaPage() {
                 return (
                   <Link key={b.id} href={`/berita/${b.slug}`} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group block">
                     {/* Foto */}
-                    <div className={`aspect-video relative overflow-hidden bg-gradient-to-br ${gradient}`}>
+                    <div className={`relative overflow-hidden bg-gradient-to-br ${gradient}`}>
                       {fotoUrl && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={fotoUrl} alt={b.judul}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500" />
                       )}
                       {/* Badge kategori */}
                       <div className="absolute top-3 left-3">

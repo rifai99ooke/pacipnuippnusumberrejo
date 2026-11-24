@@ -81,10 +81,10 @@ export default async function BeritaDetailPage({ params }: { params: Promise<{ s
         <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-6">{b.judul}</h1>
 
         {/* Foto */}
-        <div className={`aspect-video rounded-2xl overflow-hidden bg-gradient-to-br ${gradient} mb-8 shadow relative`}>
+        <div className={`rounded-2xl overflow-hidden bg-gradient-to-br ${gradient} mb-8 shadow`}>
           {fotoUrl && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={fotoUrl} alt={b.judul} className="w-full h-full object-cover" />
+            <img src={fotoUrl} alt={b.judul} className="w-full h-auto object-contain" />
           )}
         </div>
 
