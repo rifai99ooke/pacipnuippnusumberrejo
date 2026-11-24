@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
 const JABATAN_BY_TIPE: Record<string, string[]> = {
-  bph:        ['Ketua', 'Wakil Ketua', 'Sekretaris 1', 'Sekretaris 2', 'Sekretaris 3', 'Bendahara 1', 'Bendahara 2', 'Bendahara 3'],
+  bph:        ['Ketua', 'Wakil Ketua 1', 'Wakil Ketua 2', 'Wakil Ketua 3', 'Sekretaris 1', 'Sekretaris 2', 'Sekretaris 3', 'Bendahara 1', 'Bendahara 2', 'Bendahara 3'],
   departemen: ['Koordinator', 'Anggota'],
   lembaga:    ['Komandan', 'Wakil Komandan', 'Sekretaris', 'Bendahara', 'Anggota'],
 }
