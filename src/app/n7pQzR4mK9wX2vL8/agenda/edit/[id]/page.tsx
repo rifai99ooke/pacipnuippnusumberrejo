@@ -213,7 +213,7 @@ export default function EditAgendaPage() {
       </form>
 
       {showCropper && rawSrc && (
-        <ImageCropper src={rawSrc} aspect={16/9} onDone={handleCropDone} onCancel={() => setShowCropper(false)} />
+        <ImageCropper src={rawSrc} freeAspect onDone={handleCropDone} onCancel={() => setShowCropper(false)} />
       )}
     </div>
   )

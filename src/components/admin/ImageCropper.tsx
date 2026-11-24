@@ -7,7 +7,8 @@ interface CropArea { x: number; y: number; width: number; height: number }
 
 interface Props {
   src: string
-  aspect?: number       // default 3/4
+  aspect?: number       // default 3/4, undefined = bebas
+  freeAspect?: boolean  // kalau true, tidak ada paksa rasio
   onDone: (croppedBlob: Blob, previewUrl: string) => void
   onCancel: () => void
 }
@@ -29,7 +30,7 @@ async function getCroppedImg(imageSrc: string, pixelCrop: CropArea): Promise<Blo
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.92))
 }
 
-export default function ImageCropper({ src, aspect = 3 / 4, onDone, onCancel }: Props) {
+export default function ImageCropper({ src, aspect = 3 / 4, freeAspect = false, onDone, onCancel }: Props) {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<CropArea | null>(null)
@@ -50,7 +51,10 @@ export default function ImageCropper({ src, aspect = 3 / 4, onDone, onCancel }: 
       <div className="bg-white rounded-2xl overflow-hidden w-full max-w-lg shadow-2xl">
         {/* Header */}
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="font-bold text-gray-900">Crop Foto</h3>
+          <div>
+            <h3 className="font-bold text-gray-900">Crop Foto</h3>
+            {freeAspect && <p className="text-xs text-gray-400 mt-0.5">Geser & zoom untuk menyesuaikan</p>}
+          </div>
           <button type="button" onClick={onCancel} className="text-gray-400 hover:text-gray-600">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -64,7 +68,7 @@ export default function ImageCropper({ src, aspect = 3 / 4, onDone, onCancel }: 
             image={src}
             crop={crop}
             zoom={zoom}
-            aspect={aspect}
+            aspect={freeAspect ? undefined : aspect}
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropComplete}
