@@ -38,7 +38,7 @@ export default async function BeritaPage() {
           {beritas.length === 0 ? (
             <p className="text-center text-gray-500 py-16">Belum ada berita.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
               {beritas.map((b: any, i: number) => {
                 const fotoUrl = getStorageUrl('berita', b.foto)
                 const gradient = gradients[i % gradients.length]
@@ -46,7 +46,7 @@ export default async function BeritaPage() {
                 const tglStr = tgl.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
 
                 return (
-                  <Link key={b.id} href={`/berita/${b.slug}`} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group block">
+                  <Link key={b.id} href={`/berita/${b.slug}`} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col h-full">
                     {/* Foto */}
                     <div className={`relative overflow-hidden bg-gradient-to-br ${gradient}`}>
                       {fotoUrl && (
@@ -63,7 +63,7 @@ export default async function BeritaPage() {
                     </div>
 
                     {/* Konten */}
-                    <div className="p-5">
+                    <div className="p-5 flex flex-col flex-1">
                       {/* Meta */}
                       <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
                         <div className="flex items-center gap-1">
@@ -85,13 +85,13 @@ export default async function BeritaPage() {
                         {b.judul}
                       </h3>
 
-                      {/* Ringkasan - strip HTML tags untuk preview */}
-                      <p className="text-sm text-gray-500 mb-4 line-clamp-3">
+                      {/* Ringkasan - flex-1 agar mengisi ruang, tidak dibatasi line-clamp */}
+                      <p className="text-sm text-gray-500 mb-4 flex-1">
                         {b.ringkasan?.replace(/<[^>]*>/g, '') || ''}
                       </p>
 
-                      {/* Baca Selengkapnya */}
-                      <span className="text-green-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                      {/* Baca Selengkapnya — selalu di bawah */}
+                      <span className="text-green-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
                         Baca Selengkapnya
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
