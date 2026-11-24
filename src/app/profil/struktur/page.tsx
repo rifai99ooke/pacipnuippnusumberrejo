@@ -105,6 +105,9 @@ function BphCard({
         {hasWaka && wakaIpnu.map((w, i) => {
           const wIppnu = wakaIppnu[i]
           if (!w && !wIppnu) return null
+          const wakaLabel = wakaPrefix === 'Wakil Ketua'
+            ? `Wakil Ketua ${i + 1}`
+            : `Waka. ${wakaPrefix.replace(/\s*\d+$/, '')} ${i + 2}`
           return (
             <div key={i} className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 last:border-0">
               {/* IPNU */}
@@ -112,7 +115,7 @@ function BphCard({
                 <Avatar foto={w?.foto ?? null} nama={w?.nama ?? '?'} size="sm" />
                 <div className="text-center">
                   <p className="text-xs font-semibold text-gray-800 leading-tight">{w?.nama ?? '—'}</p>
-                  <p className="text-xs text-gray-400">{wakaPrefix === 'Wakil Ketua' ? `Waka ${i + 1}` : `Waka ${wakaPrefix.replace(/\d/g, '').trim()} ${i + 1}`}</p>
+                  <p className="text-xs text-gray-400">{wakaLabel}</p>
                 </div>
               </div>
               {/* IPPNU */}
@@ -120,7 +123,7 @@ function BphCard({
                 <Avatar foto={wIppnu?.foto ?? null} nama={wIppnu?.nama ?? '?'} size="sm" />
                 <div className="text-center">
                   <p className="text-xs font-semibold text-gray-800 leading-tight">{wIppnu?.nama ?? '—'}</p>
-                  <p className="text-xs text-gray-400">{wakaPrefix === 'Wakil Ketua' ? `Waka ${i + 1}` : `Waka ${wakaPrefix.replace(/\d/g, '').trim()} ${i + 1}`}</p>
+                  <p className="text-xs text-gray-400">{wakaLabel}</p>
                 </div>
               </div>
             </div>
