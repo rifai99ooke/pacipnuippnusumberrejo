@@ -59,7 +59,7 @@ export default function DataTable({ title, addHref, columns, rows, onDelete, edi
               <tr key={row.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{i + 1}</td>
                 {processedColumns.map((c) => (
-                  <td key={c.key} className={`px-4 py-3 text-gray-900 ${c.hideOnMobile ? 'hidden sm:table-cell' : ''} ${c.key === processedColumns[0].key ? 'max-w-[150px] sm:max-w-none truncate' : ''}`}>
+                  <td key={c.key} className={`px-4 py-3 text-gray-900 ${c.hideOnMobile ? 'hidden sm:table-cell' : ''} ${c.key === processedColumns[0].key ? 'max-w-[150px] sm:max-w-xs lg:max-w-none truncate' : ''}`}>
                     {renderCell ? renderCell(c.key, row) : (row[c.key] ?? '-')}
                   </td>
                 ))}

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import ImageCropper from '@/components/admin/ImageCropper'
 
 const inputCls = 'w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition text-sm'
 const KATEGORI_NON_PROKER = ['Keagamaan', 'Rutinan', 'Sosial', 'Silaturahmi', 'Undangan', 'Insidental', 'Rapat', 'Lainnya']
@@ -30,8 +29,6 @@ export default function EditAgendaPage() {
   const [status, setStatus] = useState<'akan_datang' | 'selesai'>('akan_datang')
   const [laporan, setLaporan] = useState('')
   const [existingFoto, setExistingFoto] = useState<string | null>(null)
-  const [rawSrc, setRawSrc] = useState<string | null>(null)
-  const [showCropper, setShowCropper] = useState(false)
   const [fotoBlob, setFotoBlob] = useState<Blob | null>(null)
   const [preview, setPreview] = useState('')
 
@@ -58,12 +55,9 @@ export default function EditAgendaPage() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return
-    setRawSrc(URL.createObjectURL(file)); setShowCropper(true); e.target.value = ''
+    setFotoBlob(file); setPreview(URL.createObjectURL(file)); e.target.value = ''
   }
 
-  const handleCropDone = (blob: Blob, url: string) => {
-    setFotoBlob(blob); setPreview(url); setShowCropper(false)
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -211,10 +205,6 @@ export default function EditAgendaPage() {
           </button>
         </div>
       </form>
-
-      {showCropper && rawSrc && (
-        <ImageCropper src={rawSrc} freeAspect onDone={handleCropDone} onCancel={() => setShowCropper(false)} />
-      )}
     </div>
   )
 }

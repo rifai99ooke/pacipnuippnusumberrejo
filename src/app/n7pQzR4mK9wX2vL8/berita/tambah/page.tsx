@@ -4,7 +4,6 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import RichTextEditor from '@/components/admin/RichTextEditor'
-import ImageCropper from '@/components/admin/ImageCropper'
 
 const inputCls = 'w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition text-sm'
 
@@ -33,18 +32,12 @@ export default function TambahBeritaPage() {
   const [isi, setIsi] = useState('')
 
   // Foto & crop
-  const [rawSrc, setRawSrc] = useState<string | null>(null)
-  const [showCropper, setShowCropper] = useState(false)
   const [fotoBlob, setFotoBlob] = useState<Blob | null>(null)
   const [preview, setPreview] = useState('')
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return
-    setRawSrc(URL.createObjectURL(file)); setShowCropper(true); e.target.value = ''
-  }
-
-  const handleCropDone = (blob: Blob, url: string) => {
-    setFotoBlob(blob); setPreview(url); setShowCropper(false)
+    setFotoBlob(file); setPreview(URL.createObjectURL(file)); e.target.value = ''
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -165,10 +158,6 @@ export default function TambahBeritaPage() {
           </button>
         </div>
       </form>
-
-      {showCropper && rawSrc && (
-        <ImageCropper src={rawSrc} freeAspect onDone={handleCropDone} onCancel={() => setShowCropper(false)} />
-      )}
     </div>
   )
 }
