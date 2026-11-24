@@ -4,101 +4,129 @@ import { supabase, getStorageUrl } from '@/lib/supabase'
 export const revalidate = 60
 export const metadata = { title: 'Struktur Kepengurusan' }
 
-function FotoAvatar({ foto, nama, size = 'md' }: { foto: string | null; nama: string; size?: 'sm' | 'md' | 'lg' }) {
-  const fotoUrl = foto ? getStorageUrl('pengurus', foto) : null
-  const sizeClass = size === 'lg' ? 'w-24 h-24' : size === 'md' ? 'w-16 h-16' : 'w-10 h-10'
+function Avatar({ foto, nama, size = 'md' }: { foto: string | null; nama: string; size?: 'sm' | 'md' | 'lg' }) {
+  const url = foto ? getStorageUrl('pengurus', foto) : null
+  const sz  = size === 'lg' ? 'w-20 h-20' : size === 'md' ? 'w-14 h-14' : 'w-10 h-10'
+  const fs  = size === 'lg' ? 24 : size === 'md' ? 18 : 13
   return (
-    <div className={`${sizeClass} rounded-full overflow-hidden bg-green-100 flex-shrink-0`}>
-      {fotoUrl ? (
+    <div className={`${sz} rounded-xl overflow-hidden bg-green-100 flex-shrink-0 mx-auto`}>
+      {url ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={fotoUrl} alt={nama} className="w-full h-full object-cover" />
+        <img src={url} alt={nama} className="w-full h-full object-cover" />
       ) : (
         <div className="w-full h-full flex items-center justify-center">
-          <span className="font-bold text-green-600" style={{ fontSize: size === 'lg' ? 28 : size === 'md' ? 20 : 14 }}>
-            {nama?.charAt(0)}
-          </span>
+          <span className="font-bold text-green-600" style={{ fontSize: fs }}>{nama?.charAt(0)}</span>
         </div>
       )}
     </div>
   )
 }
 
-// Card Ketua + Wakil Ketua
-function CardKetuaWakil({ list, title, color }: { list: any[]; title: string; color: 'green' | 'teal' }) {
-  const ketua   = list.find(p => p.jabatan === 'Ketua')
-  const wakils  = list.filter(p => p.jabatan?.startsWith('Wakil Ketua')).sort((a, b) => a.jabatan.localeCompare(b.jabatan))
-  const accent  = color === 'green' ? 'border-green-500 text-green-600' : 'border-teal-500 text-teal-600'
-  const bgAccent = color === 'green' ? 'bg-green-50' : 'bg-teal-50'
-
+// Satu baris: IPNU kiri, IPPNU kanan
+function BphRow({
+  ipnu, ippnu, label,
+}: {
+  ipnu:  { nama: string; foto: string | null } | null
+  ippnu: { nama: string; foto: string | null } | null
+  label?: string
+}) {
+  const size = label === undefined ? 'lg' : 'md'
   return (
-    <div className={`bg-white rounded-2xl border-t-4 ${color === 'green' ? 'border-green-500' : 'border-teal-500'} shadow-sm p-6`}>
-      <p className={`text-xs font-bold tracking-widest uppercase mb-1 ${color === 'green' ? 'text-green-600' : 'text-teal-600'}`}>{title}</p>
-
-      {/* Ketua */}
-      {ketua ? (
-        <div className="flex flex-col items-center py-5 border-b border-gray-100 mb-4">
-          <FotoAvatar foto={ketua.foto} nama={ketua.nama} size="lg" />
-          <p className={`text-xs font-bold tracking-wider uppercase mt-3 mb-1 ${color === 'green' ? 'text-green-600' : 'text-teal-600'}`}>
-            {ketua.jabatan}
-          </p>
-          <p className="text-xl font-black text-gray-900">{ketua.nama}</p>
+    <div className="grid grid-cols-2 gap-4 py-4 border-b border-gray-100 last:border-0">
+      {/* Kiri — IPNU */}
+      <div className="flex flex-col items-center gap-2">
+        <Avatar foto={ipnu?.foto ?? null} nama={ipnu?.nama ?? '?'} size={size} />
+        <div className="text-center">
+          <p className="text-sm font-bold text-gray-900 leading-tight">{ipnu?.nama ?? '—'}</p>
+          {label !== undefined && <p className="text-xs text-green-600 mt-0.5">{label} · IPNU</p>}
         </div>
-      ) : (
-        <div className="py-5 border-b border-gray-100 mb-4 text-center text-gray-400 text-sm">Belum ada data</div>
-      )}
-
-      {/* Wakil Ketua */}
-      {wakils.length > 0 && (
-        <div className={`${bgAccent} rounded-xl p-3 space-y-2`}>
-          {wakils.map((p) => (
-            <div key={p.id} className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2 min-w-0">
-                <FotoAvatar foto={p.foto} nama={p.nama} size="sm" />
-                <span className="text-xs text-gray-500 truncate">{p.jabatan}</span>
-              </div>
-              <span className="text-xs font-bold text-gray-900 text-right flex-shrink-0">{p.nama}</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-// Card Sekretaris atau Bendahara
-function CardDivisi({ list, judul, icon, color }: { list: any[]; judul: string; icon: string; color: 'green' | 'teal' }) {
-  const ketua  = list.find(p => p.jabatan === judul || p.jabatan === `${judul} 1`)
-  const wakas  = list.filter(p => p.jabatan !== judul && p.jabatan !== `${judul} 1`).sort((a, b) => a.jabatan.localeCompare(b.jabatan))
-
-  return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-      <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">{icon}</span>
-          <span className={`text-xs font-bold tracking-widest uppercase ${color === 'green' ? 'text-green-600' : 'text-teal-600'}`}>{judul}</span>
-        </div>
-        {ketua && (
-          <div className="flex items-center gap-2">
-            <FotoAvatar foto={ketua.foto} nama={ketua.nama} size="sm" />
-            <span className="text-sm font-bold text-gray-900">{ketua.nama}</span>
-          </div>
-        )}
       </div>
-      {wakas.length > 0 ? (
-        <div className="space-y-2">
-          {wakas.map((p) => (
-            <div key={p.id} className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-1.5">
-              <div className="flex items-center gap-2 min-w-0">
-                <FotoAvatar foto={p.foto} nama={p.nama} size="sm" />
-                <span className="text-xs text-gray-500 truncate">{p.jabatan.replace(judul, 'Waka.')}</span>
-              </div>
-              <span className="text-xs font-bold text-gray-900 flex-shrink-0">{p.nama}</span>
-            </div>
-          ))}
+      {/* Kanan — IPPNU */}
+      <div className="flex flex-col items-center gap-2">
+        <Avatar foto={ippnu?.foto ?? null} nama={ippnu?.nama ?? '?'} size={size} />
+        <div className="text-center">
+          <p className="text-sm font-bold text-gray-900 leading-tight">{ippnu?.nama ?? '—'}</p>
+          {label !== undefined && <p className="text-xs text-green-600 mt-0.5">{label} · IPPNU</p>}
         </div>
-      ) : (
-        <p className="text-xs text-gray-400 text-center py-2">Belum ada data</p>
-      )}
+      </div>
+    </div>
+  )
+}
+
+// Card BPH — satu kelompok jabatan (Ketua, Sekretaris, Bendahara)
+function BphCard({
+  title, ipnu, ippnu, mainJabatan, wakaPrefix,
+}: {
+  title:       string
+  ipnu:        any[]
+  ippnu:       any[]
+  mainJabatan: string   // e.g. 'Ketua', 'Sekretaris 1', 'Bendahara 1'
+  wakaPrefix:  string   // e.g. 'Wakil Ketua', 'Sekretaris', 'Bendahara'
+}) {
+  const findMain = (list: any[]) =>
+    list.find(p => p.jabatan === mainJabatan) ??
+    list.find(p => p.jabatan === wakaPrefix) ??
+    null
+
+  const findWakas = (list: any[], count: number) => {
+    const result: (any | null)[] = []
+    for (let i = 1; i <= count; i++) {
+      result.push(list.find(p => p.jabatan === `${wakaPrefix} ${i}`) ?? null)
+    }
+    return result
+  }
+
+  const mainIpnu  = findMain(ipnu)
+  const mainIppnu = findMain(ippnu)
+
+  // Hitung max waka yang ada
+  const wakaIpnu  = findWakas(ipnu,  3)
+  const wakaIppnu = findWakas(ippnu, 3)
+  const hasWaka   = wakaIpnu.some(Boolean) || wakaIppnu.some(Boolean)
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* Header */}
+      <div className="bg-green-600 px-5 py-3 text-center">
+        <h3 className="text-white font-bold text-sm tracking-widest uppercase">{title}</h3>
+      </div>
+
+      <div className="px-4 py-2">
+        {/* Header kolom */}
+        <div className="grid grid-cols-2 gap-4 pb-2 mb-2 border-b border-gray-100">
+          <p className="text-center text-xs font-bold text-green-600 uppercase tracking-wider">IPNU</p>
+          <p className="text-center text-xs font-bold text-green-600 uppercase tracking-wider">IPPNU</p>
+        </div>
+
+        {/* Baris utama (Ketua/Sekretaris/Bendahara) */}
+        <BphRow ipnu={mainIpnu} ippnu={mainIppnu} />
+
+        {/* Baris Wakil */}
+        {hasWaka && wakaIpnu.map((w, i) => {
+          const wIppnu = wakaIppnu[i]
+          if (!w && !wIppnu) return null
+          return (
+            <div key={i} className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 last:border-0">
+              {/* IPNU */}
+              <div className="flex flex-col items-center gap-1.5">
+                <Avatar foto={w?.foto ?? null} nama={w?.nama ?? '?'} size="sm" />
+                <div className="text-center">
+                  <p className="text-xs font-semibold text-gray-800 leading-tight">{w?.nama ?? '—'}</p>
+                  <p className="text-xs text-gray-400">{wakaPrefix === 'Wakil Ketua' ? `Waka ${i + 1}` : `Waka ${wakaPrefix.replace(/\d/g, '').trim()} ${i + 1}`}</p>
+                </div>
+              </div>
+              {/* IPPNU */}
+              <div className="flex flex-col items-center gap-1.5">
+                <Avatar foto={wIppnu?.foto ?? null} nama={wIppnu?.nama ?? '?'} size="sm" />
+                <div className="text-center">
+                  <p className="text-xs font-semibold text-gray-800 leading-tight">{wIppnu?.nama ?? '—'}</p>
+                  <p className="text-xs text-gray-400">{wakaPrefix === 'Wakil Ketua' ? `Waka ${i + 1}` : `Waka ${wakaPrefix.replace(/\d/g, '').trim()} ${i + 1}`}</p>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -135,11 +163,10 @@ export default async function StrukturPage() {
     supabase.from('pengurus').select('*').eq('aktif', true).is('departemen', null).order('urutan'),
   ])
 
-  const listBphIpnu  = bphIpnuRes.data  || []
-  const listBphIppnu = bphIppnuRes.data || []
-  const listHarian   = harianRes.data   || []
-
-  const hasBph = listBphIpnu.length > 0 || listBphIppnu.length > 0
+  const ipnu   = bphIpnuRes.data  || []
+  const ippnu  = bphIppnuRes.data || []
+  const harian = harianRes.data   || []
+  const hasBph = ipnu.length > 0 || ippnu.length > 0
 
   return (
     <>
@@ -149,10 +176,10 @@ export default async function StrukturPage() {
         </div>
       </section>
 
-      {/* BPH — Layout baru */}
+      {/* BPH */}
       {hasBph && (
         <section className="py-14 bg-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Judul */}
             <div className="flex items-center gap-4 mb-10">
               <div className="flex-1 h-px bg-gray-200" />
@@ -160,70 +187,40 @@ export default async function StrukturPage() {
               <div className="flex-1 h-px bg-gray-200" />
             </div>
 
-            {/* Ketua & Wakil Ketua — IPNU kiri, IPPNU kanan */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              {listBphIpnu.length > 0 && (
-                <CardKetuaWakil
-                  list={listBphIpnu}
-                  title="BPH IPNU"
-                  color="green"
-                />
-              )}
-              {listBphIppnu.length > 0 && (
-                <CardKetuaWakil
-                  list={listBphIppnu}
-                  title="BPH IPPNU"
-                  color="teal"
-                />
-              )}
-            </div>
+            <div className="space-y-6">
+              {/* Card Ketua */}
+              <BphCard
+                title="Ketua"
+                ipnu={ipnu}
+                ippnu={ippnu}
+                mainJabatan="Ketua"
+                wakaPrefix="Wakil Ketua"
+              />
 
-            {/* Sekretaris & Bendahara */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">
-              {/* Sekretaris IPNU */}
-              {listBphIpnu.some((p: any) => p.jabatan?.startsWith('Sekretaris')) && (
-                <CardDivisi
-                  list={listBphIpnu.filter((p: any) => p.jabatan?.startsWith('Sekretaris'))}
-                  judul="Sekretaris"
-                  icon="📋"
-                  color="green"
-                />
-              )}
-              {/* Bendahara IPNU */}
-              {listBphIpnu.some((p: any) => p.jabatan?.startsWith('Bendahara')) && (
-                <CardDivisi
-                  list={listBphIpnu.filter((p: any) => p.jabatan?.startsWith('Bendahara'))}
-                  judul="Bendahara"
-                  icon="💰"
-                  color="green"
-                />
-              )}
-            </div>
-            {/* Sekretaris & Bendahara IPPNU */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              {listBphIppnu.some((p: any) => p.jabatan?.startsWith('Sekretaris')) && (
-                <CardDivisi
-                  list={listBphIppnu.filter((p: any) => p.jabatan?.startsWith('Sekretaris'))}
-                  judul="Sekretaris"
-                  icon="📋"
-                  color="teal"
-                />
-              )}
-              {listBphIppnu.some((p: any) => p.jabatan?.startsWith('Bendahara')) && (
-                <CardDivisi
-                  list={listBphIppnu.filter((p: any) => p.jabatan?.startsWith('Bendahara'))}
-                  judul="Bendahara"
-                  icon="💰"
-                  color="teal"
-                />
-              )}
+              {/* Card Sekretaris */}
+              <BphCard
+                title="Sekretaris"
+                ipnu={ipnu}
+                ippnu={ippnu}
+                mainJabatan="Sekretaris 1"
+                wakaPrefix="Sekretaris"
+              />
+
+              {/* Card Bendahara */}
+              <BphCard
+                title="Bendahara"
+                ipnu={ipnu}
+                ippnu={ippnu}
+                mainJabatan="Bendahara 1"
+                wakaPrefix="Bendahara"
+              />
             </div>
           </div>
         </section>
       )}
 
-      {/* Pengurus lama (null departemen) */}
-      {listHarian.length > 0 && (
+      {/* Pengurus lama */}
+      {harian.length > 0 && (
         <section className="py-14 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3 mb-8">
@@ -231,7 +228,7 @@ export default async function StrukturPage() {
               <h2 className="text-2xl font-bold text-gray-900">Pengurus Harian</h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-              {listHarian.map((p: any) => <PengurusCard key={p.id} p={p} />)}
+              {harian.map((p: any) => <PengurusCard key={p.id} p={p} />)}
             </div>
           </div>
         </section>
