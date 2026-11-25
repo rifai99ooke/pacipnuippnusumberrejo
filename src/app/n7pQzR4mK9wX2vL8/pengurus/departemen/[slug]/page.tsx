@@ -62,13 +62,17 @@ export default function DepartemenAnggotaPage() {
 
   useEffect(() => { load() }, [slug])
 
+  const isBph = slug === 'bph-ipnu' || slug === 'bph-ippnu'
+  const autoOrganisasi = slug === 'bph-ipnu' ? 'IPNU' : slug === 'bph-ippnu' ? 'IPPNU' : 'IPNU'
+
   const openAdd = () => {
-    setForm(emptyForm); setPreview(''); setFotoBlob(null)
+    setForm({ ...emptyForm, organisasi: autoOrganisasi })
+    setPreview(''); setFotoBlob(null)
     setErrorMsg(''); setShowForm(true)
   }
 
   const openEdit = (p: any) => {
-    setForm({ id: p.id, nama: p.nama, jabatan: p.jabatan, organisasi: p.organisasi, urutan: String(p.urutan ?? 0), aktif: p.aktif })
+    setForm({ id: p.id, nama: p.nama, jabatan: p.jabatan, organisasi: isBph ? autoOrganisasi : p.organisasi, urutan: String(p.urutan ?? 0), aktif: p.aktif })
     setPreview(p.foto || ''); setFotoBlob(null)
     setErrorMsg(''); setShowForm(true)
   }
@@ -212,13 +216,16 @@ export default function DepartemenAnggotaPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Jabatan <span className="text-red-500">*</span></label>
                 <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Organisasi</label>
-                <select value={form.organisasi} onChange={e => setForm(f => ({ ...f, organisasi: e.target.value }))} className={inputCls}>
-                  <option value="IPNU">IPNU</option>
-                  <option value="IPPNU">IPPNU</option>
-                </select>
-              </div>
+              {/* Organisasi — sembunyikan untuk BPH karena otomatis dari departemen */}
+              {!isBph && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Organisasi</label>
+                  <select value={form.organisasi} onChange={e => setForm(f => ({ ...f, organisasi: e.target.value }))} className={inputCls}>
+                    <option value="IPNU">IPNU</option>
+                    <option value="IPPNU">IPPNU</option>
+                  </select>
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Foto</label>
                 <div className="flex items-center gap-3">
