@@ -96,17 +96,26 @@ export default function DepartemenAnggotaPage() {
     e.preventDefault()
     if (!form.nama.trim() || !form.jabatan.trim()) { setErrorMsg('Nama dan jabatan wajib diisi.'); return }
 
-    // Validasi: jabatan tidak boleh duplikat untuk organisasi yang sama
-    // (kecuali Anggota yang bebas, dan Koordinator boleh 2 asalkan beda organisasi)
+    // Validasi: jabatan tidak boleh duplikat
+    // - Anggota: bebas
+    // - Koordinator di departemen biasa: boleh 2 (1 IPNU + 1 IPPNU)
+    // - Jabatan lain: hanya 1 per kombinasi jabatan+organisasi
     if (form.jabatan !== 'Anggota') {
-      const jabatanTerpakai = anggota.find(p =>
-        p.jabatan === form.jabatan &&
-        p.organisasi === form.organisasi &&
-        p.id !== form.id
-      )
-      if (jabatanTerpakai) {
-        setErrorMsg(`Jabatan "${form.jabatan}" untuk ${form.organisasi} sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
-        return
+      const samJabatan = anggota.filter(p => p.jabatan === form.jabatan && p.id !== form.id)
+
+      if (form.jabatan === 'Koordinator' && !isBph) {
+        // Koordinator departemen: maksimal 2
+        if (samJabatan.length >= 2) {
+          setErrorMsg(`Jabatan "Koordinator" sudah penuh (maksimal 2: 1 IPNU + 1 IPPNU).`)
+          return
+        }
+      } else {
+        // Jabatan lain: cek per organisasi
+        const jabatanTerpakai = samJabatan.find(p => p.organisasi === form.organisasi)
+        if (jabatanTerpakai) {
+          setErrorMsg(`Jabatan "${form.jabatan}" untuk ${form.organisasi} sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
+          return
+        }
       }
     }
 
@@ -229,7 +238,11 @@ export default function DepartemenAnggotaPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Jabatan <span className="text-red-500">*</span></label>
-                <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} usedJabatan={anggota.filter(p => p.id !== form.id && p.organisasi === form.organisasi).map(p => p.jabatan)} />
+                <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} usedJabatan={
+                  isBph
+                    ? anggota.filter(p => p.id !== form.id && p.organisasi === form.organisasi).map(p => p.jabatan)
+                    : anggota.filter(p => p.id !== form.id && p.jabatan !== 'Anggota' && !(p.jabatan === 'Koordinator' && anggota.filter(x => x.jabatan === 'Koordinator' && x.id !== form.id).length < 2)).map(p => p.jabatan)
+                } />
               </div>
               {/* Organisasi — sembunyikan untuk BPH karena otomatis dari departemen */}
               {!isBph && (
