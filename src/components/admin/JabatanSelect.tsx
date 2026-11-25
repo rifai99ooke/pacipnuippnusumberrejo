@@ -49,7 +49,9 @@ export default function JabatanSelect({ value, onChange, slug, tipe: tipeProp, c
     <select value={value} onChange={e => onChange(e.target.value)} className={className}>
       <option value="">— Pilih Jabatan —</option>
       {options.map(opt => {
-        const isTerpakai = usedJabatan.includes(opt) && opt !== value
+        // Anggota tidak dibatasi — boleh banyak
+        const bolehDuplikat = opt === 'Anggota'
+        const isTerpakai = !bolehDuplikat && usedJabatan.includes(opt) && opt !== value
         return (
           <option key={opt} value={opt} disabled={isTerpakai}>
             {isTerpakai ? `${opt} ✓ (sudah terisi)` : opt}

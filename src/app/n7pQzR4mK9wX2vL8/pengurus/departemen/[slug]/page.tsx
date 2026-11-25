@@ -96,13 +96,15 @@ export default function DepartemenAnggotaPage() {
     e.preventDefault()
     if (!form.nama.trim() || !form.jabatan.trim()) { setErrorMsg('Nama dan jabatan wajib diisi.'); return }
 
-    // Validasi: jabatan tidak boleh duplikat (kecuali saat edit data yang sama)
-    const jabatanTerpakai = anggota.find(p =>
-      p.jabatan === form.jabatan && p.id !== form.id
-    )
-    if (jabatanTerpakai) {
-      setErrorMsg(`Jabatan "${form.jabatan}" sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
-      return
+    // Validasi: jabatan tidak boleh duplikat (kecuali saat edit data yang sama, dan kecuali Anggota)
+    if (form.jabatan !== 'Anggota') {
+      const jabatanTerpakai = anggota.find(p =>
+        p.jabatan === form.jabatan && p.id !== form.id
+      )
+      if (jabatanTerpakai) {
+        setErrorMsg(`Jabatan "${form.jabatan}" sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
+        return
+      }
     }
 
     setLoading(true); setErrorMsg('')
