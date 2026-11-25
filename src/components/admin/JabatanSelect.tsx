@@ -10,34 +10,31 @@ const JABATAN_BY_TIPE: Record<string, string[]> = {
 }
 
 interface Props {
-  value: string
-  onChange: (val: string) => void
-  slug?: string
-  tipe?: string   // ← bisa di-pass langsung dari parent
-  className?: string
+  value:        string
+  onChange:     (val: string) => void
+  slug?:        string
+  tipe?:        string
+  className?:   string
+  usedJabatan?: string[]  // jabatan yang sudah terpakai (tidak bisa dipilih lagi)
 }
 
-export default function JabatanSelect({ value, onChange, slug, tipe: tipeProp, className }: Props) {
+export default function JabatanSelect({ value, onChange, slug, tipe: tipeProp, className, usedJabatan = [] }: Props) {
   const [options, setOptions] = useState<string[]>(JABATAN_BY_TIPE['departemen'])
 
   useEffect(() => {
-    // Kalau tipe sudah di-pass langsung, pakai itu
     if (tipeProp && JABATAN_BY_TIPE[tipeProp]) {
       setOptions(JABATAN_BY_TIPE[tipeProp])
       return
     }
-
     if (!slug) return
 
-    // Fetch tipe dari database
     supabase.from('departemen').select('tipe').eq('slug', slug).maybeSingle()
       .then(({ data }) => {
         if (data?.tipe && JABATAN_BY_TIPE[data.tipe]) {
           setOptions(JABATAN_BY_TIPE[data.tipe])
         } else {
-          // Fallback pattern matching
           const s = slug.toLowerCase()
-          if (s.includes('bph') || s === 'pbh' || s.includes('pengurus-harian')) {
+          if (s.includes('bph') || s.includes('pengurus-harian')) {
             setOptions(JABATAN_BY_TIPE['bph'])
           } else if (s.includes('cbp') || s.includes('kpp') || s.includes('lembaga')) {
             setOptions(JABATAN_BY_TIPE['lembaga'])
@@ -51,7 +48,14 @@ export default function JabatanSelect({ value, onChange, slug, tipe: tipeProp, c
   return (
     <select value={value} onChange={e => onChange(e.target.value)} className={className}>
       <option value="">— Pilih Jabatan —</option>
-      {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+      {options.map(opt => {
+        const isTerpakai = usedJabatan.includes(opt) && opt !== value
+        return (
+          <option key={opt} value={opt} disabled={isTerpakai}>
+            {isTerpakai ? `${opt} ✓ (sudah terisi)` : opt}
+          </option>
+        )
+      })}
     </select>
   )
 }

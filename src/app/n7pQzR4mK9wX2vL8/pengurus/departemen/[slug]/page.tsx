@@ -95,6 +95,16 @@ export default function DepartemenAnggotaPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.nama.trim() || !form.jabatan.trim()) { setErrorMsg('Nama dan jabatan wajib diisi.'); return }
+
+    // Validasi: jabatan tidak boleh duplikat (kecuali saat edit data yang sama)
+    const jabatanTerpakai = anggota.find(p =>
+      p.jabatan === form.jabatan && p.id !== form.id
+    )
+    if (jabatanTerpakai) {
+      setErrorMsg(`Jabatan "${form.jabatan}" sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
+      return
+    }
+
     setLoading(true); setErrorMsg('')
     try {
       let fotoPath = form.id ? (preview.startsWith('/images') ? preview : null) : null
@@ -214,7 +224,7 @@ export default function DepartemenAnggotaPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Jabatan <span className="text-red-500">*</span></label>
-                <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} />
+                <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} usedJabatan={anggota.filter(p => p.id !== form.id).map(p => p.jabatan)} />
               </div>
               {/* Organisasi — sembunyikan untuk BPH karena otomatis dari departemen */}
               {!isBph && (
