@@ -66,6 +66,7 @@ function BphCard({
   const findMain = (list: any[]) =>
     list.find(p => p.jabatan === mainJabatan) ??
     list.find(p => p.jabatan === wakaPrefix) ??
+    list.find(p => p.jabatan === `${wakaPrefix} 1`) ??
     null
 
   const findWakas = (list: any[], count: number) => {
@@ -75,7 +76,6 @@ function BphCard({
     }
     return result
   }
-
   const mainIpnu  = findMain(ipnu)
   const mainIppnu = findMain(ippnu)
 
@@ -107,7 +107,7 @@ function BphCard({
           if (!w && !wIppnu) return null
           const wakaLabel = wakaPrefix === 'Wakil Ketua'
             ? `Wakil Ketua ${i + 1}`
-            : `Waka. ${wakaPrefix.replace(/\s*\d+$/, '')} ${i + 2}`
+            : `Waka. ${wakaPrefix} ${i + 1}`
           return (
             <div key={i} className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 last:border-0">
               {/* IPNU */}
@@ -205,7 +205,7 @@ export default async function StrukturPage() {
                 title="Sekretaris"
                 ipnu={ipnu}
                 ippnu={ippnu}
-                mainJabatan="Sekretaris 1"
+                mainJabatan="Sekretaris"
                 wakaPrefix="Sekretaris"
               />
 
@@ -214,7 +214,7 @@ export default async function StrukturPage() {
                 title="Bendahara"
                 ipnu={ipnu}
                 ippnu={ippnu}
-                mainJabatan="Bendahara 1"
+                mainJabatan="Bendahara"
                 wakaPrefix="Bendahara"
               />
             </div>
