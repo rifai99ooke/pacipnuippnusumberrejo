@@ -96,13 +96,16 @@ export default function DepartemenAnggotaPage() {
     e.preventDefault()
     if (!form.nama.trim() || !form.jabatan.trim()) { setErrorMsg('Nama dan jabatan wajib diisi.'); return }
 
-    // Validasi: jabatan tidak boleh duplikat (kecuali saat edit data yang sama, dan kecuali Anggota)
+    // Validasi: jabatan tidak boleh duplikat untuk organisasi yang sama
+    // (kecuali Anggota yang bebas, dan Koordinator boleh 2 asalkan beda organisasi)
     if (form.jabatan !== 'Anggota') {
       const jabatanTerpakai = anggota.find(p =>
-        p.jabatan === form.jabatan && p.id !== form.id
+        p.jabatan === form.jabatan &&
+        p.organisasi === form.organisasi &&
+        p.id !== form.id
       )
       if (jabatanTerpakai) {
-        setErrorMsg(`Jabatan "${form.jabatan}" sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
+        setErrorMsg(`Jabatan "${form.jabatan}" untuk ${form.organisasi} sudah diisi oleh ${jabatanTerpakai.nama}. Hapus atau edit data tersebut terlebih dahulu.`)
         return
       }
     }
@@ -226,7 +229,7 @@ export default function DepartemenAnggotaPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Jabatan <span className="text-red-500">*</span></label>
-                <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} usedJabatan={anggota.filter(p => p.id !== form.id).map(p => p.jabatan)} />
+                <JabatanSelect value={form.jabatan} onChange={val => setForm(f => ({ ...f, jabatan: val }))} slug={slug} tipe={info?.tipe} className={inputCls} usedJabatan={anggota.filter(p => p.id !== form.id && p.organisasi === form.organisasi).map(p => p.jabatan)} />
               </div>
               {/* Organisasi — sembunyikan untuk BPH karena otomatis dari departemen */}
               {!isBph && (
